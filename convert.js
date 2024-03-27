@@ -1,7 +1,14 @@
 import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 
 (async () => {
-	init();
+	// init();
+
+	document.querySelector("#input-init").addEventListener('click', async v => {
+		await init();
+		document.querySelector("#input-init").disabled = true;
+		document.querySelector("#input-generate").disabled = false;
+		document.querySelector("#input-init").value = "初期化済み";
+	});
 
 	function getSvgString() {
 		function textConvert(text, spacing) {
