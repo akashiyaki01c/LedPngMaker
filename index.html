@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="inputs">
+		<div>
+			<label for="input-width">幅</label>
+			<input type="number" name="width" id="input-width" value="96">
+		</div>
+		<div>
+			<label for="input-dest-ja">行先(日本語)</label>
+			<input type="text" name="dest-ja" id="input-dest-ja" value="">
+			<label for="input-dest-ja-spacing">字間</label>
+			<input type="number" name="dest-ja" id="input-dest-ja-spacing" value="0">
+		</div>
+		<div>
+			<label for="input-dest-en">行先(英語)</label>
+			<input type="text" name="dest-en" id="input-dest-en" value="">
+		</div>
+		<div>
+			<label for="input-dest-en">背景色</label>
+			<input type="color" name="bg-color" id="input-bg-color" value="#222222">
+			<label for="input-dest-en">文字色</label>
+			<input type="color" name="fg-color" id="input-fg-color" value="#ffffff">
+		</div>
+		<div>
+			<label for="input-dest-en">縁取り</label>
+			<input type="checkbox" name="border" id="input-border">
+			<input type="color" name="border-color" id="input-border-color" value="#ff0000">
+		</div>
+		<div>
+			<input id="input-generate" type="button" value="画像生成(未実装)">
+		</div>
+	</div>
+	<div>
+		<div>変換後画像</div>
+		<div class="export" id="export">
+			<img id="export-image" src="">
+		</div>
+	</div>
+	<script type="module" src="convert.js"></script>
+</body>
+</html>

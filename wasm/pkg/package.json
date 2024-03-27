@@ -1,0 +1,23 @@
+{
+  "name": "ler-maker",
+  "collaborators": [
+    "Xifire"
+  ],
+  "description": "",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "files": [
+    "ler_maker_bg.wasm",
+    "ler_maker.js",
+    "ler_maker.d.ts"
+  ],
+  "module": "ler_maker.js",
+  "types": "ler_maker.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
