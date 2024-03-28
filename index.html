@@ -28,17 +28,27 @@
 		<div>
 			<label for="input-dest-en">行先(英語)</label>
 			<input type="text" name="dest-en" id="input-dest-en" value="">
+			<label for="input-dest-en">シフト</label>
+			<input type="checkbox" name="dest-en-shift" id="input-dest-en-shift" value="">
 		</div>
 		<div>
 			<label for="input-dest-en">背景色</label>
 			<input type="color" name="bg-color" id="input-bg-color" value="#222222">
 			<label for="input-dest-en">文字色</label>
 			<input type="color" name="fg-color" id="input-fg-color" value="#ffffff">
-		</div>
-		<div>
 			<label for="input-dest-en">縁取り</label>
 			<input type="checkbox" name="border" id="input-border">
 			<input type="color" name="border-color" id="input-border-color" value="#ff0000">
+		</div>
+		<div class="presets">
+			<span>プリセット</span>
+			<input type="button" value="3色赤" onclick='preset("#222222", "#ff2222", false, "#222222")'>
+			<input type="button" value="3色橙" onclick='preset("#222222", "#ff9922", false, "#222222")'>
+			<input type="button" value="3色緑" onclick='preset("#222222", "#22aa22", false, "#222222")'>
+			<input type="button" value="FC白" onclick='preset("#222222", "#ffffff", false, "#222222")'>
+			<input type="button" value="FC赤地" onclick='preset("#ff2222", "#ffffff", true, "#222222")'>
+			<input type="button" value="FC緑地" onclick='preset("#22cc22", "#ffffff", true, "#222222")'>
+			<input type="button" value="FC青地" onclick='preset("#2277ff", "#ffffff", true, "#222222")'>
 		</div>
 		<div>
 			<input id="input-init" type="button" value="初期化 (約10MBダウンロードが必要です。)">
@@ -54,5 +64,13 @@
 	</div>
 	<footer>(c) akashiyaki01c</footer>
 	<script type="module" src="convert.js"></script>
+	<script>
+		function preset(bg, fg, isFuchi, fuchi) {
+			document.querySelector("#input-bg-color").value = bg;
+			document.querySelector("#input-fg-color").value = fg;
+			document.querySelector("#input-border").checked = isFuchi;
+			document.querySelector("#input-border-color").value = fuchi;
+		}
+	</script>
 </body>
 </html>

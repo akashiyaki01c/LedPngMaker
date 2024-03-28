@@ -3,4 +3,9 @@
 	min-width: 50%;
 	image-rendering: pixelated;
 	display: block;
+	border: 5px solid gray;
+}
+
+.presets button {
+
 }
