@@ -19,7 +19,6 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		const backgroundColor = document.querySelector("#input-bg-color").value;
 		const foregroundColor = document.querySelector("#input-fg-color").value;
 		const enableBorder = document.querySelector("#input-border").checked;
-		console.log(destEn);
 		const borderColor = document.querySelector("#input-border-color").value;
 
 		const borderString = enableBorder ? `style="stroke-width: 2; stroke: ${borderColor}; paint-order: stroke fill markers;"`: "";
@@ -41,7 +40,6 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		const backgroundColor = document.querySelector("#input-bg-color").value;
 		const foregroundColor = document.querySelector("#input-fg-color").value;
 		const enableBorder = document.querySelector("#input-border").checked;
-		console.log(destEn);
 		const borderColor = document.querySelector("#input-border-color").value;
 		const isShift = document.querySelector("#input-dest-en-shift").checked;
 		const scale = 5;
@@ -84,7 +82,6 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 	}
 	function getMaskedSvgUrl() {
 		const svgString = getMaskedSvgString();
-		console.log(svgString);
 		const svgPng = svg_to_png(svgString);
 		return `data:image/png;base64,${uint8ArrayToBase64(svgPng)}`;
 	}
