@@ -1,4 +1,6 @@
-#export-image {
-	width: 100%;
+#export-image,
+#export-masked-image {
+	min-width: 50%;
 	image-rendering: pixelated;
+	display: block;
 }
