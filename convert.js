@@ -1,14 +1,25 @@
 import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 
-(async () => {
+(() => {
 	// init();
 
-	document.querySelector("#input-init").addEventListener('click', async v => {
+	let isInit = false;
+	async function initer() {
+		if (isInit) {
+			return;
+		}
+		isInit = true;
 		await init();
 		document.querySelector("#input-init").disabled = true;
 		document.querySelector("#input-generate").disabled = false;
 		document.querySelector("#input-init").value = "初期化済み";
-	});
+	}
+	document.querySelector("#input-init").addEventListener('click', initer);
+	const params = new URL(decodeURIComponent(document.location.href)).searchParams;
+	const directInitialize = params.get("directInitialize") || "false";
+	if (directInitialize == "true") {
+		initer();
+	}
 
 	function getSvgString() {
 		const width = document.querySelector("#input-width").value;
