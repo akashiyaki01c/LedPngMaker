@@ -1,7 +1,9 @@
 use std::sync::Arc;
-
 use wasm_bindgen::prelude::*;
-use resvg::usvg::{fontdb, TreeParsing, TreeTextToPath, ImageRendering, TextRendering, ShapeRendering};
+use resvg::usvg::{fontdb, ImageRendering, ShapeRendering, TextRendering, TreeParsing, TreeTextToPath};
+
+static FONT_GEN_BITMAP: &[u8] = include_bytes!("./fonts/GenBitmap.ttf");
+static FONT_ENGLISH_BITMAP: &[u8] = include_bytes!("./fonts/LedEnglishBitmap.ttf");
 
 #[wasm_bindgen]
 pub fn svg_to_png(svg: &str) -> Vec<u8> {
@@ -13,8 +15,8 @@ pub fn svg_to_png(svg: &str) -> Vec<u8> {
 
         let mut fontdb = fontdb::Database::new();
         fontdb.load_system_fonts();
-        fontdb.load_font_source(fontdb::Source::Binary(Arc::new(include_bytes!("./fonts/GenBitmap.ttf"))));
-        fontdb.load_font_source(fontdb::Source::Binary(Arc::new(include_bytes!("./fonts/LedEnglishBitmap.ttf"))));
+        fontdb.load_font_source(fontdb::Source::Binary(Arc::new(FONT_GEN_BITMAP)));
+        fontdb.load_font_source(fontdb::Source::Binary(Arc::new(FONT_ENGLISH_BITMAP)));
         let mut tree = resvg::usvg::Tree::from_data(svg.as_bytes(), &opt).unwrap();
         tree.convert_text(&fontdb);
         resvg::Tree::from_usvg(&tree)
