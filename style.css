@@ -1,9 +1,12 @@
 #export-image,
 #export-masked-image {
-	min-width: 50%;
+	height: calc(32px * 5);
 	image-rendering: pixelated;
 	display: block;
 	border: 5px solid gray;
+	&[src=""] {
+		display: none;	
+	}
 }
 
 .presets button {
