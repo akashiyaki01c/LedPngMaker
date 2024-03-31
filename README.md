@@ -2,6 +2,9 @@
 ブラウザ上でLED方向幕を再現するプログラムです。
 
 ## 使用したライブラリ
+### [jiskan24]
+24px明朝体フォントです。
+
 ### [GenBitmap (MIT)](https://github.com/akashiyaki01c/GenBitmap)
 24pxゴシックフォントです。
 
