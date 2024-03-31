@@ -29,6 +29,7 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		const destEn = document.querySelector("#input-dest-en").value.replace(/ /g, "_");
 		const backgroundColor = document.querySelector("#input-bg-color").value;
 		const foregroundColor = document.querySelector("#input-fg-color").value;
+		const foregroundEnColor = document.querySelector("#input-en-color-change").checked ? document.querySelector("#input-dest-en-color").value : foregroundColor;
 		const enableBorder = document.querySelector("#input-border").checked;
 		const borderColor = document.querySelector("#input-border-color").value;
 		const isMincho = document.querySelector("#input-is-mincho").checked ? "XF_jiskan24" : "Gen Bitmap";
@@ -39,7 +40,7 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
 	<rect x="0" y="0" width="${width}" height="${height}" fill="${backgroundColor}"></rect>
 	<text font-family="${isMincho}" text-anchor="middle" font-size="24" x="${width/2}" y="21" fill="${foregroundColor}" letter-spacing="${destJaSpacing}" ${borderString}>${destJa}</text>
-	<text font-family="LedEnglishBitmap" text-anchor="middle" x="${width/2}" y="32" font-size="7" fill="${foregroundColor}" ${borderString}>${destEn}</text>
+	<text font-family="LedEnglishBitmap" text-anchor="middle" x="${width/2}" y="32" font-size="7" fill="${foregroundEnColor}" ${borderString}>${destEn}</text>
 </svg>
 		`;
 	}

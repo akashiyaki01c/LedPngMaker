@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>LED方向幕 再現ツール v0.2</title>
+	<title>LED方向幕 再現ツール v0.3</title>
 	<meta name="robots" content="noindex">
 	<link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
 	<link rel="stylesheet" href="/css/style.css">
@@ -11,47 +11,72 @@
 </head>
 <body>
 	<header>
-		<h1>LED方向幕 再現ツール v0.2</h1>
-		<div> / <a href="/">ホーム</a> / LED方向幕 再現ツール v0.2</div>
+		<h1>LED方向幕 再現ツール v0.3</h1>
+		<div> / <a href="/">ホーム</a> / LED方向幕 再現ツール v0.3</div>
 	</header>
 	<div class="inputs">
-		<div>
-			<label for="input-width">幅</label>
-			<input type="number" name="width" id="input-width" value="96">
-		</div>
-		<div>
-			<label for="input-dest-ja">行先(日本語)</label>
-			<input type="text" name="dest-ja" id="input-dest-ja" value="">
-			<label for="input-dest-ja-spacing">字間</label>
-			<input type="number" name="dest-ja" id="input-dest-ja-spacing" value="0">
-		</div>
-		<div>
-			<label for="input-dest-en">行先(英語)</label>
-			<input type="text" name="dest-en" id="input-dest-en" value="">
-		</div>
-		<div>
-			<label for="input-dest-en">背景色</label>
-			<input type="color" name="bg-color" id="input-bg-color" value="#222222">
-			<label for="input-dest-en">文字色</label>
-			<input type="color" name="fg-color" id="input-fg-color" value="#ffffff">
-			<label for="input-dest-en">縁取り</label>
-			<input type="checkbox" name="border" id="input-border">
-			<input type="color" name="border-color" id="input-border-color" value="#ff0000">
-		</div>
-		<div>
-			<label for="input-is-mincho">明朝体モード</label>
-			<input type="checkbox" name="is-mincho" id="input-is-mincho">
-		</div>
-		<div class="presets">
-			<span>プリセット</span>
-			<input type="button" value="3色赤" onclick='preset("#222222", "#ff2222", false, "#222222")' style="background-color: #222; color: #f22">
-			<input type="button" value="3色橙" onclick='preset("#222222", "#ffaa22", false, "#222222")' style="background-color: #222; color: #fa2">
-			<input type="button" value="3色緑" onclick='preset("#222222", "#22aa22", false, "#222222")' style="background-color: #222; color: #2a2">
-			<input type="button" value="FC白" onclick='preset("#222222", "#ffffff", false, "#222222")' style="background-color: #222; color: #fff">
-			<input type="button" value="FC赤地" onclick='preset("#ff2222", "#ffffff", true, "#222222")' style="background-color: #f22; color: #222">
-			<input type="button" value="FC緑地" onclick='preset("#22cc22", "#ffffff", true, "#222222")' style="background-color: #2c2; color: #222">
-			<input type="button" value="FC青地" onclick='preset("#2277ff", "#ffffff", true, "#222222")' style="background-color: #27f; color: #222">
-		</div>
+		<fieldset>
+			<legend>基本設定</legend>
+			<div>
+				<label for="input-width">幅</label>
+				<input type="number" name="width" id="input-width" value="96">
+			</div>
+			<div>
+				<label for="input-dest-en">背景色</label>
+				<input type="color" name="bg-color" id="input-bg-color" value="#222222">
+				<label for="input-dest-en">文字色</label>
+				<input type="color" name="fg-color" id="input-fg-color" value="#ffffff">
+				<label for="input-dest-en">英字色上書き</label>
+				<input type="checkbox" name="dest-en-color-change" id="input-en-color-change">
+				<input type="color" name="fg-dest-en-color" id="input-dest-en-color" value="#ffffff">
+				<label for="input-dest-en">縁取り</label>
+				<input type="checkbox" name="border" id="input-border">
+				<input type="color" name="border-color" id="input-border-color" value="#ff0000">
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>行先設定</legend>
+			<div>
+				<label for="input-dest-ja">行先(日本語)</label>
+				<input type="text" name="dest-ja" id="input-dest-ja" value="">
+				<label for="input-dest-ja-spacing">字間</label>
+				<input type="number" name="dest-ja" id="input-dest-ja-spacing" value="0">
+			</div>
+			<div>
+				<label for="input-dest-en">行先(英語)</label>
+				<input type="text" name="dest-en" id="input-dest-en" value="">
+			</div>
+			<div>
+				<label for="input-is-mincho">明朝体モード</label>
+				<input type="checkbox" name="is-mincho" id="input-is-mincho">
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>プリセット</legend>
+			<div class="presets">
+				<span>幅</span>
+				<input type="button" value="96px" onclick='preset_width(96)'>
+				<input type="button" value="128px" onclick='preset_width(128)'>
+				<input type="button" value="192px" onclick='preset_width(192)'>
+			</div>
+			<div class="presets">
+				<span>背景色/文字色/縁取り色</span>
+				<input type="button" value="3色赤" onclick='preset_color("#222222", "#ff2222", "", "")' style="background-color: #222; color: #f22">
+				<input type="button" value="3色橙" onclick='preset_color("#222222", "#ffaa22", "", "")' style="background-color: #222; color: #fa2">
+				<input type="button" value="3色緑" onclick='preset_color("#222222", "#22aa22", "", "")' style="background-color: #222; color: #2a2">
+				<input type="button" value="FC黒地白字" onclick='preset_color("#222222", "#ffffff", "", "")' style="background-color: #222; color: #fff">
+				<input type="button" value="FC赤地白字" onclick='preset_color("#ff2222", "#ffffff", "", "")' style="background-color: #f22; color: #fff">
+				<input type="button" value="FC緑地白字" onclick='preset_color("#22cc22", "#ffffff", "", "")' style="background-color: #2c2; color: #fff">
+				<input type="button" value="FC青地白字" onclick='preset_color("#2277ff", "#ffffff", "", "")' style="background-color: #27f; color: #fff">
+			</div>
+			<div class="presets">
+				<span>それっぽい設定プリセット</span>
+				<input type="button" value="3色明朝" onclick='preset_color("#222222", "#ffaa22", "", "#ff2222"); preset_mincho(true); preset_width(96)' style="background-color: #222; color: #fa2">
+				<input type="button" value="FC明朝" onclick='preset_color("#222222", "#ffffff", "", ""); preset_mincho(true);' style="background-color: #222; color: #fff">
+				<input type="button" value="3色ゴシック" onclick='preset_color("#222222", "#ffaa22", "", ""); preset_mincho(false);' style="background-color: #222; color: #fa2">
+				<input type="button" value="FCゴシック" onclick='preset_color("#222222", "#ffffff", "", ""); preset_mincho(false);' style="background-color: #222; color: #fff">
+			</div>
+		</fieldset>
 		<div>
 			<input id="input-init" type="button" value="初期化 (約13MBダウンロードが必要です。)">
 			<input id="input-generate" type="button" value="画像生成" disabled>
@@ -76,11 +101,19 @@
 	</footer>
 	<script type="module" src="convert.js"></script>
 	<script>
-		function preset(bg, fg, isFuchi, fuchi) {
+		function preset_color(bg, fg, fuchi, enfg) {
 			document.querySelector("#input-bg-color").value = bg;
 			document.querySelector("#input-fg-color").value = fg;
-			document.querySelector("#input-border").checked = isFuchi;
+			document.querySelector("#input-border").checked = fuchi != "";
 			document.querySelector("#input-border-color").value = fuchi;
+			document.querySelector("#input-en-color-change").checked = enfg != "";
+			document.querySelector("#input-dest-en-color").value = enfg;
+		}
+		function preset_width(width) {
+			document.querySelector("#input-width").value = width;
+		}
+		function preset_mincho(value) {
+			document.querySelector("#input-is-mincho").checked = value;
 		}
 	</script>
 </body>
