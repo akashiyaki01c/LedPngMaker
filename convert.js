@@ -21,6 +21,18 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		initer();
 	}
 
+	function getTransformString(destJa, width) {
+		if (destJa.length*24 <= width) {
+			return "";
+		}
+		const scale = width / (destJa.length*24);
+		const translate = ((destJa.length*24) - width) / 2;
+		const str = `transform="scale(${scale}, 1.0) translate(${translate}, 0.0)"`;
+		console.log(str);
+
+		return str;
+	}
+
 	function getSvgString() {
 		const width = document.querySelector("#input-width").value;
 		const height = 32;
@@ -33,13 +45,24 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		const enableBorder = document.querySelector("#input-border").checked;
 		const borderColor = document.querySelector("#input-border-color").value;
 		const isMincho = document.querySelector("#input-is-mincho").checked;
+		const isCompress = document.querySelector("#input-compress").checked;
 
 		const borderString = enableBorder ? `style="stroke-width: 2; stroke: ${borderColor}; paint-order: stroke fill markers;"`: "";
 
 		return `
 <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-	<rect x="0" y="0" width="${width}" height="${height}" fill="${backgroundColor}"></rect>
-	<text font-family="${isMincho ? "XF_jiskan24" : "Gen Bitmap"}" text-anchor="middle" font-size="24" x="${width/2}" y="${isMincho ? 22 : 21}" fill="${foregroundColor}" letter-spacing="${destJaSpacing}" ${borderString}>${destJa}</text>
+	<rect 
+		x="0" y="0" 
+		width="${width}" height="${height}" 
+		fill="${backgroundColor}"></rect>
+	<text 
+		font-family="${isMincho ? "XF_jiskan24" : "Gen Bitmap"}" 
+		text-anchor="middle" font-size="24" 
+		x="${width/2}" y="${isMincho ? 22 : 21}" 
+		fill="${foregroundColor}" 
+		letter-spacing="${destJaSpacing}" 
+		${borderString} 
+		${isCompress ? getTransformString(destJa, width) : ""}>${destJa}</text>
 	<text font-family="LedEnglishBitmap" text-anchor="middle" x="${width/2}" y="32" font-size="7" fill="${foregroundEnColor}" ${borderString}>${destEn}</text>
 </svg>
 		`;

@@ -83,6 +83,10 @@
 				<label for="input-realtime">リアルタイム描画(試験的)</label>
 				<input type="checkbox" name="realtime" id="input-realtime" checked>
 			</div>
+			<div>
+				<label for="input-realtime">日本語表示を圧縮する(試験的)</label>
+				<input type="checkbox" name="compress" id="input-compress" checked>
+			</div>
 		</fieldset>
 		<div>
 			<input id="input-init" type="button" value="初期化 (約13MBダウンロードが必要です。)">
@@ -111,12 +115,12 @@
 	<script type="module" src="convert.js"></script>
 	<script>
 		function preset_color(bg, fg, fuchi, enfg) {
-			document.querySelector("#input-bg-color").value = bg;
-			document.querySelector("#input-fg-color").value = fg;
+			document.querySelector("#input-bg-color").value = bg || "#000000";
+			document.querySelector("#input-fg-color").value = fg || "#000000";
 			document.querySelector("#input-border").checked = fuchi != "";
-			document.querySelector("#input-border-color").value = fuchi;
+			document.querySelector("#input-border-color").value = fuchi || "#000000";
 			document.querySelector("#input-en-color-change").checked = enfg != "";
-			document.querySelector("#input-dest-en-color").value = enfg;
+			document.querySelector("#input-dest-en-color").value = enfg || "#000000";
 		}
 		function preset_width(width) {
 			document.querySelector("#input-width").value = width;
@@ -137,7 +141,7 @@
 		})();
 	</script>
 	<script type="module">
-		const version = "0.4";
+		const version = "0.5";
 		((version) => {
 			const str = `${document.title} v${version}`
 			document.title = str;
