@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>LED方向幕 再現ツール</title>
+	<meta name="robots" content="noindex">
+	<link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+	<header>
+		<h1>LED方向幕 再現ツール</h1>
+		<div> / <a href="/">ホーム</a> / LED方向幕 再現ツール</div>
+	</header>
+	<div class="inputs">
+		<fieldset>
+			<legend>設定</legend>
+			<div><input type="file" name="input-file" id="input-file" accept=".png" value="PNGファイルを選択"></div>
+			<div>
+				<label for="input-width">幅</label>
+				<input type="number" name="width" id="input-width" value="96">
+				<label for="input-height">高さ</label>
+				<input type="number" name="height" id="input-height" value="32">
+			</div>
+		</fieldset>
+		<input id="input-button" type="button" value="画像変換">
+	</div>
+	<img src="" id="output-raw" style="image-rendering: pixelated;">
+	<img src="" id="output" style="image-rendering: pixelated;">
+	<script type="module" src="script.js"></script>
+	<footer>
+		(c) akashiyaki01c
+		<!-- FC2カウンター ここから -->
+		<script language="javascript" type="text/javascript" src="//counter1.fc2.com/counter.php?id=38828719&main=1"></script>
+		<noscript><img src="//counter1.fc2.com/counter_img.php?id=38828719&main=1" /></noscript>
+		<!-- FC2カウンター ここまで -->
+	</footer>
+</body>
+</html>

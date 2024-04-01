@@ -88,17 +88,19 @@
 			<input id="input-init" type="button" value="初期化 (約13MBダウンロードが必要です。)">
 			<input id="input-generate" type="button" value="画像生成" disabled>
 		</div>
-		<div>
-			<a href="./help.html">ヘルプページ</a>
-		</div>
 	</div>
 	<div>
-		<div>変換後画像</div>
+		<div>変換後画像↓</div>
 		<div class="export" id="export">
 			<img id="export-image" src="">
 			<img id="export-masked-image" src="">
 		</div>
 	</div>
+	<h2>その他リンク</h2>
+	<ul>
+		<li><a href="./help.html">ヘルプページ</a></li>
+		<li><a href="./led-converter/index.html">PNG to LED PNGサイト</a></li>
+	</ul>
 	<footer>
 		(c) akashiyaki01c
 		<!-- FC2カウンター ここから -->
@@ -122,6 +124,17 @@
 		function preset_mincho(value) {
 			document.querySelector("#input-is-mincho").checked = value;
 		}
+		(() => {
+			function change(e) {
+				if (document.querySelector("#input-realtime").checked) {
+					document.querySelector("#input-generate").click();
+				}
+			}
+			document.querySelector(".inputs").addEventListener('change', change);
+			document.querySelectorAll(".presets>input[type='button']").forEach(v => {
+				v.addEventListener('', change);
+			});
+		})();
 	</script>
 	<script type="module">
 		const version = "0.4";

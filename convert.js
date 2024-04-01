@@ -93,15 +93,4 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		document.querySelector("#export-image").src = svgUrl;
 		document.querySelector("#export-masked-image").src = getMaskedSvgUrl(svgUrl);
 	});
-
-	document.addEventListener('keydown', e => {
-		console.log('keydown', e);
-		/* switch (e.code) {
-			case "KeyG":
-				document.querySelector("#input-generate").click();
-		} */
-		if (document.querySelector("#input-realtime").checked) {
-			document.querySelector("#input-generate").click();
-		}
-	});
 })();
