@@ -22,11 +22,18 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 	}
 
 	function getTransformString(destJa, width) {
-		if (destJa.length*24 <= width) {
+		function getLength(str) {
+			let length = str.length * 24;
+			const hankakuCount = (str.match(/[A-Za-z0-9\-･\(\)]/g) || []).length;
+			return length - hankakuCount * 12;
+		}
+
+		const length = getLength(destJa);
+		if (length <= width) {
 			return "";
 		}
-		const scale = width / (destJa.length*24);
-		const translate = ((destJa.length*24) - width) / 2;
+		const scale = width / length;
+		const translate = (length - width) / 2;
 		const str = `transform="scale(${scale}, 1.0) translate(${translate}, 0.0)"`;
 		console.log(str);
 
