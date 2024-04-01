@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>LED方向幕 再現ツール v0.3</title>
+	<title>LED方向幕 再現ツール</title>
 	<meta name="robots" content="noindex">
 	<link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
 	<link rel="stylesheet" href="/css/style.css">
@@ -11,8 +11,8 @@
 </head>
 <body>
 	<header>
-		<h1>LED方向幕 再現ツール v0.3</h1>
-		<div> / <a href="/">ホーム</a> / LED方向幕 再現ツール v0.3</div>
+		<h1>LED方向幕 再現ツール</h1>
+		<div> / <a href="/">ホーム</a> / LED方向幕 再現ツール</div>
 	</header>
 	<div class="inputs">
 		<fieldset>
@@ -77,6 +77,13 @@
 				<input type="button" value="FCゴシック" onclick='preset_color("#222222", "#ffffff", "", ""); preset_mincho(false);' style="background-color: #222; color: #fff">
 			</div>
 		</fieldset>
+		<fieldset>
+			<legend>その他設定</legend>
+			<div>
+				<label for="input-realtime">リアルタイム描画(試験的)</label>
+				<input type="checkbox" name="realtime" id="input-realtime" checked>
+			</div>
+		</fieldset>
 		<div>
 			<input id="input-init" type="button" value="初期化 (約13MBダウンロードが必要です。)">
 			<input id="input-generate" type="button" value="画像生成" disabled>
@@ -115,6 +122,14 @@
 		function preset_mincho(value) {
 			document.querySelector("#input-is-mincho").checked = value;
 		}
+	</script>
+	<script type="module">
+		const version = "0.4";
+		((version) => {
+			const str = `${document.title} v${version}`
+			document.title = str;
+			document.querySelector("header>h1").innerHTML = str;
+		})(version);
 	</script>
 </body>
 </html>
