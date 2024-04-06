@@ -21,14 +21,16 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		initer();
 	}
 
-	function getTransformString(destJa, width) {
+	function getTransformString(destJa, width, spacing) {
 		function getLength(str) {
 			let length = str.length * 24;
 			const hankakuCount = (str.match(/[A-Za-z0-9\-･\(\)]/g) || []).length;
-			return length - hankakuCount * 12;
+			console.log(spacing * (str.length-1));
+			return length - (hankakuCount * 12) + spacing * (str.length-1);
 		}
 
 		const length = getLength(destJa);
+		console.log(length);
 		if (length <= width) {
 			return "";
 		}
@@ -69,7 +71,7 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		fill="${foregroundColor}" 
 		letter-spacing="${destJaSpacing}" 
 		${borderString} 
-		${isCompress ? getTransformString(destJa, width) : ""}>${destJa}</text>
+		${isCompress ? getTransformString(destJa, width, destJaSpacing) : ""}>${destJa}</text>
 	<text font-family="LedEnglishBitmap" text-anchor="middle" x="${width/2}" y="32" font-size="7" fill="${foregroundEnColor}" ${borderString}>${destEn}</text>
 </svg>
 		`;
