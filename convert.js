@@ -1,15 +1,18 @@
-import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
+import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 
 (() => {
 	// init();
 
 	let isInit = false;
+	let fonts = null;
+
 	async function initer() {
 		if (isInit) {
 			return;
 		}
 		isInit = true;
 		await init();
+		fonts = await getFonts();
 		document.querySelector("#input-init").disabled = true;
 		document.querySelector("#input-generate").disabled = false;
 		document.querySelector("#input-init").value = "初期化済み";
@@ -65,14 +68,14 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		width="${width}" height="${height}" 
 		fill="${backgroundColor}"></rect>
 	<text 
-		font-family="${isMincho ? "XF_jiskan24" : "Gen Bitmap"}" 
+		font-family="XF_DotRoboto, ${isMincho ? "XF_jiskan24" : "XF_Palty"}" 
 		text-anchor="middle" font-size="24" 
 		x="${width/2}" y="${isMincho ? 22 : 21}" 
 		fill="${foregroundColor}" 
 		letter-spacing="${destJaSpacing}" 
 		${borderString} 
 		${isCompress ? getTransformString(destJa, width, destJaSpacing) : ""}>${destJa}</text>
-	<text font-family="LedEnglishBitmap" text-anchor="middle" x="${width/2}" y="32" font-size="7" fill="${foregroundEnColor}" ${borderString}>${destEn}</text>
+	<text font-family="XF_Serio" text-anchor="middle" x="${width/2}" y="32" font-size="7" fill="${foregroundEnColor}" ${borderString}>${destEn}</text>
 </svg>
 		`;
 	}
@@ -81,12 +84,20 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		const height = 32;
 		const scale = 5;
 
+		const maskImageUrl = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAACpJREFUCNdtzDEVACAQgFDMZCf7N/guuh0rPFalAdVB1fkRhP2EsVzT8wIa4Bi3DxRfwwAAAABJRU5ErkJggg==`;
+
 		let maskedString = "";
-		for (let x = 0; x < width; x++) {
+
+
+		/* for (let x = 0; x < width; x++) {
 			maskedString += `<path d="M${x*scale},0 L${x*scale},${height*scale}" stroke="#000" stroke-width="2"></path>`;
 		}
 		for (let y = 0; y < height; y++) {
 			maskedString += `<path d="M0,${y*scale} L${width*scale},${y*scale}" stroke="#000" stroke-width="2"></path>`;
+		} */
+		for (let x = 0; x < width; x++)
+		for (let y = 0; y < height; y++) {
+			maskedString += `<image href="${maskImageUrl}" width="${scale}" height="${scale}" x="${x*scale}" y="${y*scale}"></image>`;
 		}
 
 		return `
@@ -108,21 +119,41 @@ import init, { svg_to_png } from "./wasm/pkg/ler_maker.js";
 		return base64;
 	}
 
-	function getSvgUrl() {
+	async function getFonts() {
+		function base64encode(data){
+			return btoa([...data].map(n => String.fromCharCode(n)).join(""));
+		}		
+
+		const url = [
+			"https://cdn.jsdelivr.net/gh/akashiyaki01c/GenBitmap/output/GenBitmap.ttf",
+			"https://cdn.jsdelivr.net/gh/akashiyaki01c/GenBitmap/output/XF_DotRoboto-24px.ttf",
+			"https://cdn.jsdelivr.net/gh/akashiyaki01c/GenBitmap/output/XF_Serio.ttf"
+		];
+		
+		const fontsData = await Promise.all(url.map(async url => {
+			const buffer = await (await fetch(url, { cache: "force-cache" })).arrayBuffer();
+			const arr = new Uint8Array(buffer);
+			return [...arr]
+		}));
+		const base64edData = fontsData.map(v => base64encode(v)).join(";");
+		console.log(base64edData);
+		return base64edData;
+	}
+
+	async function getSvgUrl() {
 		const svgString = getSvgString();
-		console.log(svgString);
-		const svgPng = svg_to_png(svgString);
+		const svgPng = svg_to_png(svgString, String(fonts));
 		return `data:image/png;base64,${uint8ArrayToBase64(svgPng)}`;
 	}
-	function getMaskedSvgUrl(imgUrl) {
+	async function getMaskedSvgUrl(imgUrl) {
 		const svgString = getMaskedSvgString(imgUrl);
-		const svgPng = svg_to_png(svgString);
+		const svgPng = svg_to_png(svgString, String(fonts));
 		return `data:image/png;base64,${uint8ArrayToBase64(svgPng)}`;
 	}
 
-	document.querySelector("#input-generate").addEventListener('click', v => {
-		const svgUrl = getSvgUrl();
+	document.querySelector("#input-generate").addEventListener('click', async v => {
+		const svgUrl = await getSvgUrl();
 		document.querySelector("#export-image").src = svgUrl;
-		document.querySelector("#export-masked-image").src = getMaskedSvgUrl(svgUrl);
+		document.querySelector("#export-masked-image").src = await getMaskedSvgUrl(svgUrl);
 	});
 })();
