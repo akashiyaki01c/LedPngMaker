@@ -102,8 +102,26 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 
 		return `
 <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="${width * scale}" height="${height * scale}" viewBox="0 0 ${width * scale} ${height * scale}">
+	<defs>
+		<filter
+			id="MyFilter"
+			filterUnits="userSpaceOnUse"
+			x="0"
+			y="0"
+			width="${width*scale}"
+			height="${height*scale}">
+
+			<feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+
+			<feMerge>
+				<feMergeNode in="blur" />
+			</feMerge>
+
+		</filter>
+	</defs>
 	<image href="${imgUrl}" x="0" y="0" width="${width*scale}" height="${height*scale}"></image>
 	${maskedString}
+	<image filter="url(#MyFilter)" opacity="0.2" style="mix-blend-mode: screen" href="${imgUrl}" x="0" y="0" width="${width*scale}" height="${height*scale}"></image>
 </svg>
 		`;
 	}
