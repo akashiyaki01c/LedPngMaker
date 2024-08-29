@@ -111,7 +111,7 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 			width="${width*scale}"
 			height="${height*scale}">
 
-			<feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+			<feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
 
 			<feMerge>
 				<feMergeNode in="blur" />
@@ -121,7 +121,7 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 	</defs>
 	<image href="${imgUrl}" x="0" y="0" width="${width*scale}" height="${height*scale}"></image>
 	${maskedString}
-	<image filter="url(#MyFilter)" opacity="0.2" style="mix-blend-mode: screen" href="${imgUrl}" x="0" y="0" width="${width*scale}" height="${height*scale}"></image>
+	<image filter="url(#MyFilter)" opacity="0.4" style="mix-blend-mode: screen" href="${imgUrl}" x="0" y="0" width="${width*scale}" height="${height*scale}"></image>
 </svg>
 		`;
 	}
