@@ -5,6 +5,7 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 
 	let isInit = false;
 	let fonts = null;
+	const segmenter = new Intl.Segmenter("ja", {granularity: "grapheme"});
 
 	async function initer() {
 		if (isInit) {
@@ -26,7 +27,7 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 
 	function getTransformString(destJa, width, spacing) {
 		function getLength(str) {
-			let length = str.length * 24;
+			let length = [...segmenter.segment(str)].length * 24;
 			const hankakuCount = (str.match(/[A-Za-z0-9\-･\(\)]/g) || []).length;
 			console.log(spacing * (str.length-1));
 			return length - (hankakuCount * 12) + spacing * (str.length-1);
@@ -45,6 +46,17 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 		return str;
 	}
 
+	function getGradientDirectionAttribute(str) {
+		switch (str) {
+			case "x": 
+				return `x1="0" x2="1" y1="0" y2="0"`;
+			case "y":
+				return `x1="0" x2="0" y1="0" y2="1"`;
+			default: 
+				return "";
+		}
+	}
+
 	function getSvgString() {
 		const width = document.querySelector("#input-width").value;
 		const height = 32;
@@ -59,10 +71,32 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 		const isMincho = document.querySelector("#input-is-mincho").checked;
 		const isCompress = document.querySelector("#input-compress").checked;
 
+		const isGradient = document.querySelector("#input-gradient").checked || false;
+		const gradientValue = document.querySelector("#input-gradient-text").value
+			.split("\n")
+			.map(v => v.split(";").map(v => String(v).trim()));
+		const gradientDirection = getGradientDirectionAttribute(document.querySelector("#gradient-direction").value);
+
 		const borderString = enableBorder ? `style="stroke-width: 2; stroke: ${borderColor}; paint-order: stroke fill markers;"`: "";
 
 		return `
 <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+	<defs>
+		<linearGradient id="gradient" ${gradientDirection}>
+			${
+				gradientValue.map((v, i) => `<stop class="stop${i}" offset="${v[0]}" />`).join("")
+			}
+		</linearGradient>
+	</defs>
+	<style>
+		${ isGradient ? `rect {
+			fill: url(#gradient);
+		}` : "" }
+		${
+			gradientValue.map((v, i) => `.stop${i} { stop-color: ${v[1]}; }`).join("")
+		}
+	</style>
+
 	<rect 
 		x="0" y="0" 
 		width="${width}" height="${height}" 
@@ -80,21 +114,16 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 		`;
 	}
 	function getMaskedSvgString(imgUrl) {
-		const width = document.querySelector("#input-width").value;
+		const width = document.querySelector("#input-width").value || 96;
 		const height = 32;
 		const scale = 5;
+		const isBlur = document.querySelector("#input-blur").checked || false;
+		const blueSize = isBlur ? 1.5 : 0;
 
 		const maskImageUrl = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAACpJREFUCNdtzDEVACAQgFDMZCf7N/guuh0rPFalAdVB1fkRhP2EsVzT8wIa4Bi3DxRfwwAAAABJRU5ErkJggg==`;
 
 		let maskedString = "";
 
-
-		/* for (let x = 0; x < width; x++) {
-			maskedString += `<path d="M${x*scale},0 L${x*scale},${height*scale}" stroke="#000" stroke-width="2"></path>`;
-		}
-		for (let y = 0; y < height; y++) {
-			maskedString += `<path d="M0,${y*scale} L${width*scale},${y*scale}" stroke="#000" stroke-width="2"></path>`;
-		} */
 		for (let x = 0; x < width; x++)
 		for (let y = 0; y < height; y++) {
 			maskedString += `<image href="${maskImageUrl}" width="${scale}" height="${scale}" x="${x*scale}" y="${y*scale}"></image>`;
@@ -111,7 +140,7 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 			width="${width*scale}"
 			height="${height*scale}">
 
-			<feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
+			<feGaussianBlur in="SourceGraphic" stdDeviation="${blueSize}" result="blur" />
 
 			<feMerge>
 				<feMergeNode in="blur" />
@@ -121,7 +150,7 @@ import init, { svg_to_png } from "./wasm_without_fonts/pkg/ler_maker.js";
 	</defs>
 	<image href="${imgUrl}" x="0" y="0" width="${width*scale}" height="${height*scale}"></image>
 	${maskedString}
-	<image filter="url(#MyFilter)" opacity="0.4" style="mix-blend-mode: screen" href="${imgUrl}" x="0" y="0" width="${width*scale}" height="${height*scale}"></image>
+	<image ${isBlur ? `filter="url(#MyFilter)" opacity="0.6"` : `opacity="0"`} style="mix-blend-mode: screen" href="${imgUrl}" x="0" y="0" width="${width*scale}" height="${height*scale}"></image>
 </svg>
 		`;
 	}

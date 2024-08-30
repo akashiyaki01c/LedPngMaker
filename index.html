@@ -78,14 +78,36 @@
 			</div>
 		</fieldset>
 		<fieldset>
+			<legend>グラデーション</legend>
+			<div>
+				<label for="input-gradient">背景のグラデーション(試験的)</label>
+				<input type="checkbox" name="gradient" id="input-gradient" checked>
+			</div>
+			<div>
+				<label for="input-gradient-direction">グラデーション方向</label>
+				<select name="gradient-direction" id="gradient-direction">
+					<option value="x">横方向</option>
+					<option value="y" selected>縦方向</option>
+				</select>
+			</div>
+			<div>
+				<label for="input-gradient-text">グラデーション設定</label>
+				<textarea name="gradient-text" id="input-gradient-text"></textarea>
+			</div>
+		</fieldset>
+		<fieldset>
 			<legend>その他設定</legend>
 			<div>
 				<label for="input-realtime">リアルタイム描画(試験的)</label>
 				<input type="checkbox" name="realtime" id="input-realtime" checked>
 			</div>
 			<div>
-				<label for="input-realtime">日本語表示を圧縮する(試験的)</label>
+				<label for="input-compress">日本語表示を圧縮する(試験的)</label>
 				<input type="checkbox" name="compress" id="input-compress" checked>
+			</div>
+			<div>
+				<label for="input-blur">ブラーを表示する(試験的)</label>
+				<input type="checkbox" name="compress" id="input-blur" checked>
 			</div>
 		</fieldset>
 		<div>
@@ -141,7 +163,7 @@
 		})();
 	</script>
 	<script type="module">
-		const version = "0.61";
+		const version = "0.7";
 		((version) => {
 			const str = `${document.title} v${version}`
 			document.title = str;
